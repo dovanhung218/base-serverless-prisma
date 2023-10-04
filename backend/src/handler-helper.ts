@@ -3,7 +3,6 @@ import { CustomLogger } from './util/CustomLogger';
 import { CommonError } from './exception/CommonError';
 import SystemError from './exception/SystemError';
 
-
 const logger = CustomLogger.getCustomLogger();
 
 const DEFAULT_API_RESPONSE_HEADERS = {
@@ -58,16 +57,15 @@ export interface ControllerResponse<T> {
 export async function processAPI<T>(
   event: Lambda.APIGatewayProxyEvent,
   context: Lambda.Context,
-  controllerMethod: (event: Lambda.APIGatewayProxyEvent) => Promise<ControllerResponse<T>>,
+  controllerMethod: (event: Lambda.APIGatewayProxyEvent) => Promise<ControllerResponse<T>>
 ): Promise<APIGatewayProxyResult> {
   logger.debug('request context: ', context);
   logger.debug('request event: ', event);
   try {
-   const {body,headers}=await controllerMethod(event)
-    return createSuccessResponse(body,headers);
+    const { body, headers } = await controllerMethod(event);
+    return createSuccessResponse(body, headers);
   } catch (e) {
     const commonError = wrapError(e);
-    console.log('__handler-helper.ts__74__', e);
     return createErrorResponse(commonError);
   } finally {
   }
@@ -76,21 +74,3 @@ export async function processAPI<T>(
 export function parseBody<T>(event: Lambda.APIGatewayProxyEvent): T {
   return event.body ? JSON.parse(event.body) : {};
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

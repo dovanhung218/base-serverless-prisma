@@ -32,7 +32,7 @@ export class AuthService {
     const { email, password } = loginDto;
     const userRepo = new UserRepository();
     const user = await userRepo.findFirst({ email: email });
-    if (!user) {
+    if (user) {
       throw new Error(`Email already in use: ${email}`);
     }
     const passwordHashed = await hash(password, 10);

@@ -1,15 +1,7 @@
-export const createUserValidation = {
-    type: 'object',
-    required: ['body'],
-    properties: {
-      body: {
-        type: 'object',
-        properties: {
-          email: { type: 'string', format: 'email'},
-          name: { type: 'string'},
-          password: { type: 'string', minLength: 3, maxLength: 4 },
-        },
-        required: ['email','name','password'] 
-      }
-    }
-  }
+import Joi from 'joi';
+
+export const createUserValidation = Joi.object({
+  email: Joi.string().required().email(),
+  name: Joi.string(),
+  password: Joi.string().required().min(2).max(10),
+});

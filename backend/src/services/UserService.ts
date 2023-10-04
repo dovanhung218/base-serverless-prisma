@@ -8,7 +8,7 @@ export class UserService {
   static async create(createUserDto: CreateUserDto): Promise<ControllerResponse<TypeResponse>> {
     const userRepo = new UserRepository();
     const passwordHashed = await hash(createUserDto.password, 10);
-    const data = await userRepo.create({...createUserDto,password:passwordHashed});
+    const data = await userRepo.create({ ...createUserDto, password: passwordHashed });
     return {
       body: {
         result: data,

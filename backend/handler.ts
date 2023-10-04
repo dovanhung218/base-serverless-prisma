@@ -1,10 +1,10 @@
-import Lambda, { APIGatewayProxyResult } from 'aws-lambda';
-import { processAPI } from './src/handler-helper';
-import { MainController } from './src/MainController';
 import middy from '@middy/core';
-import httpErrorHandler from '@middy/http-error-handler';
-import validator from '@middy/validator';
-import { transpileSchema } from '@middy/validator/transpile';
+import Lambda, { APIGatewayProxyResult } from 'aws-lambda';
+import { MainController } from './src/MainController';
+import { processAPI } from './src/handler-helper';
+import authorization from './src/util/authorization';
+import errorHandler from './src/util/errorHandler';
+import bodyValidator from './src/util/validator';
 import { createUserValidation } from './src/validation/user.validation';
 export async function login(
   event: Lambda.APIGatewayProxyEvent,
@@ -13,29 +13,28 @@ export async function login(
   return processAPI(event, context, MainController.login);
 }
 
-export async function signup(
+export const signup = async (
   event: Lambda.APIGatewayProxyEvent,
   context: Lambda.Context
-): Promise<APIGatewayProxyResult | void> {
+): Promise<APIGatewayProxyResult | void> => {
   return processAPI(event, context, MainController.signup);
-}
+};
 
-export const createUser = middy(async function createUser(
+export const createUser = middy(
+  async (
+    event: Lambda.APIGatewayProxyEvent,
+    context: Lambda.Context
+  ): Promise<APIGatewayProxyResult | void> => {
+    return processAPI(event, context, MainController.createUser);
+  }
+)
+  .use(authorization())
+  .use(bodyValidator(createUserValidation))
+  .use(errorHandler());
+
+export const getUser = async (
   event: Lambda.APIGatewayProxyEvent,
   context: Lambda.Context
-): Promise<APIGatewayProxyResult | void> {
-  return processAPI(event, context, MainController.createUser);
-})
-  .use(validator({ eventSchema: transpileSchema(createUserValidation) }))
-  .use(httpErrorHandler()).onError(()=>{
-    
-  })
-
-
-
-export const getUser = async function getUser(
-  event: Lambda.APIGatewayProxyEvent,
-  context: Lambda.Context
-): Promise<APIGatewayProxyResult | void> {
+): Promise<APIGatewayProxyResult | void> => {
   return processAPI(event, context, MainController.getUser);
 };

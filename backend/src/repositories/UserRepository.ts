@@ -10,11 +10,11 @@ export class UserRepository implements IUserRepository {
   async create(user: CreateUserDto): Promise<User> {
     return await this.prismaClient.user.create({ data: user });
   }
-  async findFirst(user:Partial<User>): Promise<User> {
+  async findFirst(user: Partial<User>): Promise<User | any> {
     const data = await this.prismaClient.user.findFirst({ where: user });
     if (data) {
       return data;
     }
-    throw new Error('Not found user.');
+    return null;
   }
 }

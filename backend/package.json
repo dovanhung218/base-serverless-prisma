@@ -30,6 +30,7 @@
     "aws-sdk": "2.485.0",
     "bcryptjs": "^2.4.3",
     "dotenv": "^10.0.0",
+    "joi": "^17.11.0",
     "jsonwebtoken": "^8.5.1",
     "log4js": "^6.9.1",
     "serverless-dotenv-plugin": "^6.0.0"
