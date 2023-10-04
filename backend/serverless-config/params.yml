@@ -1,0 +1,9 @@
+# Variables used only in serverless.yml are defined here
+default:
+  LOG_RETENTION_DAYS: 30
+  LOCAL_HTTP_PORT: dummy
+  LOCAL_LAMBDA_PORT: dummy
+  LOCAL_USER_POOL_ID: dummy
+local:
+  LOCAL_HTTP_PORT: 3000
+  LOCAL_LAMBDA_PORT: 3002

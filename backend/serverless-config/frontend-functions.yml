@@ -1,0 +1,44 @@
+login:
+  handler: handler.login
+  events:
+    - http:
+        path: /api/v1/login
+        method: post
+        cors:
+          origin: "'*'"
+signup:
+  handler: handler.signup
+  events:
+    - http:
+        path: /api/v1/signup
+        method: post
+        cors:
+          origin: "'*'"
+createUser:
+  handler: handler.createUser
+  events:
+    - http:
+        path: /api/v1/createUser
+        method: post
+        cors:
+          origin: "'*'"
+getUser:
+  middleware:
+    # - auth.authenticate
+    # - auth.authorize
+    # - then: myFunction.handler # `then:` is unnecessary here.
+    # - catch: utils.handlerError
+    # - # or both can be combined
+    #   then: logger.log
+    #   catch: utils.handlerLoggerError
+  handler: handler.getUser
+  events:
+    - http:
+        path: /api/v1/getUser
+        method: get
+        cors:
+          origin: "'*'"
+        request:
+          parameters:
+            querystrings:
+              id: true

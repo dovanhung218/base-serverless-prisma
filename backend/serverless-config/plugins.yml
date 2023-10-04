@@ -1,0 +1,3 @@
+- serverless-dotenv-plugin
+- serverless-offline
+- serverless-webpack

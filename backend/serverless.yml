@@ -1,0 +1,31 @@
+service: idx
+useDotenv: true
+
+plugins: ${file(./serverless-config/plugins.yml)}
+
+params: ${file(./serverless-config/params.yml)}
+
+custom:
+  stage: ${opt:stage}
+  prune:
+    automatic: true
+    number: 5
+  serverless-offline:
+    httpPort: 9000
+  webpack:
+    webpackConfig: 'webpack.config.js' # Name of webpack configuration file
+    includeModules: true # Node modules configuration for packaging
+    packager: 'yarn' # Reserved for future use. Any other values will not work right now.
+    packExternalModulesMaxBuffer: 204800 # Size of stdio buffers for spawned child processes
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  cfLogs: true
+  region: ap-northeast-1
+  environment: ${file(./serverless-config/environment.yml)}
+
+package:
+  individually: true
+
+functions: ${file(./serverless-config/frontend-functions.yml)}
